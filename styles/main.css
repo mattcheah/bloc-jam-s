@@ -32,8 +32,14 @@ body {
     margin:0 auto;
 }
 
-.clearfix {
-    clear:both;
+.clearfix::before,
+.clearfix::after {
+   content: " ";
+   display: table;
+}
+
+.clearfix::after {
+   clear: both;
 }
 
 
