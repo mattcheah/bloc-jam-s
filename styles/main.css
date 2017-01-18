@@ -71,6 +71,10 @@ body {
     margin:0 auto;
 }
 
+.container.narrow {
+    max-width:56rem;
+}
+
 .clearfix::before,
 .clearfix::after {
    content: " ";
