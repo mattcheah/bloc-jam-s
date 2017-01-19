@@ -1,4 +1,4 @@
-var animatePoints = function() {
+var revealPoint = function(pointNodes) {
                     
     var pointNodes = document.getElementsByClassName("point");
     
