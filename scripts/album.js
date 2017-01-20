@@ -28,13 +28,31 @@ var albumMarconi = {
      ]
  };
 
+var albumWhite = {
+     title: 'White Album',
+     artist: 'The Beatles',
+     label: 'Apple',
+     year: '1968',
+     albumArtUrl: 'assets/images/album_covers/05.png',
+     songs: [
+         { title: "Back in the U.S.S.R.", duration: '2:43' },
+         { title: "Dear Prudence", duration: "3:56" },
+         { title: "Glass Onion", duration: "2:17"},
+         { title: "Ob-La-Di, Ob-La-Da", duration: "3:08"},
+         { title: "Wild Honey Pie", duration: '0:52'}
+     ]
+ };
+
+var albumArray = [albumPicasso, albumMarconi, albumWhite];
+
+
 var createSongRow = function(songNumber, songName, songLength) {
     
     var template = 
         '<tr class="album-view-song-item">'
-        +'<td class="song-item-number">1</td>'
-        +'<td class="song-item-title">Blue</td>'
-        +'<td class="song-item-duration">X:XX</td>'
+        +'<td class="song-item-number">'+songNumber+'</td>'
+        +'<td class="song-item-title">'+songName+'</td>'
+        +'<td class="song-item-duration">'+songLength+'</td>'
         +'</tr>';
     
     return template;
@@ -63,4 +81,14 @@ var setCurrentAlbum = function(album) {
 
 window.onload = function() {
     setCurrentAlbum(albumPicasso);
+    
+    
+    var imageElement = document.getElementsByClassName("album-cover-art")[0];
+    var albumIndex = 0;
+    document.addEventListener('click', function() {
+        if (albumIndex === 3) albumIndex = 0;
+        setCurrentAlbum(albumArray[albumIndex]);
+        albumIndex++;
+    });
+    
 }
