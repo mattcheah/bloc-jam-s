@@ -65,6 +65,11 @@ var setCurrentAlbum = function(album) {
 
 var findParentByClassName = function(element, className) {
     
+    if(!element.parentElement) {
+        alert("No Parent Found");
+        return null;
+    }
+    
     var parent = element.parentElement;
     while (parent) {
     
@@ -76,6 +81,7 @@ var findParentByClassName = function(element, className) {
         }
         
     }
+    alert("No Parent found with that class name");
     return null;
     
 }
