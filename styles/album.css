@@ -48,9 +48,15 @@ body.album {
     border-bottom:1px solid rgba(255,255,255,.5);
 }
 
+.album-view-song-item:hover {
+    background-color:rgba(255,255,255,.1);
+    cursor:pointer;
+}
+
 .song-item-number {
     width:5%;
     min-width:30px;
+    padding-left: 10px;
 }
 
 .song-item-title {
