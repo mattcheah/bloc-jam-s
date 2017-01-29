@@ -22,16 +22,13 @@ var createSongRow = function(songNumber, song) {
         if (currentlyPlayingSongNumber === parseInt(songItem.attr('data-song-number'))) {
             console.log("not the same!");
             songItem.html(playButtonTemplate);
-            currentlyPlayingSongNumber = null;
-            currentSongFromAlbum = null;
+            setSong(null);
             $('.main-controls .play-pause').html(playerBarPlayButton);
         } else if (currentlyPlayingSongNumber !== songItem.attr('data-song-number')) {
-            var currentlyPlayingSongElement = $('[data-song-number*="'+currentlyPlayingSongNumber+'"]');
-            currentlyPlayingSongElement.html(currentlyPlayingSongElement.attr('data-song-number'));
+            getSongNumberCell(currentlyPlayingSongNumber).html(currentlyPlayingSongNumber);
             songItem.html(pauseButtonTemplate);
-            currentlyPlayingSongNumber = parseInt(songItem.attr('data-song-number'));
-
-            currentSongFromAlbum = song;
+            
+            setSong(songItem.attr('data-song-number'));
             updatePlayerBarSong();
         }
         
@@ -40,7 +37,7 @@ var createSongRow = function(songNumber, song) {
     var onHover = function(event) {
         
         var songItem = $(this).find('.song-item-number');
-        if(songItem.attr("data-song-number") !== currentlyPlayingSongNumber) {
+        if(parseInt(songItem.attr("data-song-number")) !== currentlyPlayingSongNumber) {
             songItem.html(playButtonTemplate);
         }
     }
@@ -103,7 +100,7 @@ var nextSong = function() {
     }
     
     var currentIndex = trackIndex(currentAlbum, currentSongFromAlbum);
-    $("[data-song-number*='"+(currentIndex+1)+"']").html(currentIndex+1);
+    getSongNumberCell(currentIndex+1).html(currentIndex+1);
     
 
     currentIndex++;
@@ -112,15 +109,13 @@ var nextSong = function() {
         currentIndex = 0; //reset index to the first song.
     }
    
-    
-    currentSongFromAlbum = currentAlbum.songs[currentIndex];
-    currentlyPlayingSongNumber = (currentIndex+1);
+    setSong(currentIndex+1);
     
     $(".song-name").html(currentSongFromAlbum.title);
     $(".artist-song-mobile").html(currentAlbum.artist + " - " + currentSongFromAlbum.title);
     $(".artist-name").html(currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
-    $("[data-song-number*='"+(currentIndex+1)+"']").html(pauseButtonTemplate);
+    getSongNumberCell(currentIndex+1).html(pauseButtonTemplate);
     
     
 };
@@ -132,7 +127,7 @@ var prevSong = function() {
     }
     
     var currentIndex = trackIndex(currentAlbum, currentSongFromAlbum);
-    $("[data-song-number*='"+(currentIndex+1)+"']").html(currentIndex+1);
+    getSongNumberCell(currentIndex+1).html(currentIndex+1);
 
     if (currentIndex == 0) { //Add one to the current index to make it consistent with the current album length, and then add one to go to the next song. 
         currentIndex = currentAlbum.songs.length; //reset index to the first song.
@@ -140,15 +135,29 @@ var prevSong = function() {
     
     currentIndex--;
     
-    currentSongFromAlbum = currentAlbum.songs[currentIndex];
-    currentlyPlayingSongNumber = (currentIndex+1);
+    setSong(currentIndex+1);
     
     $(".song-name").html(currentSongFromAlbum.title);
     $(".artist-song-mobile").html(currentAlbum.artist + " - " + currentSongFromAlbum.title);
     $(".artist-name").html(currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
-    $("[data-song-number*='"+(currentIndex+1)+"']").html(pauseButtonTemplate);
+    getSongNumberCell(currentIndex+1).html(pauseButtonTemplate);
     
+};
+
+var setSong = function(songNumber) {
+    if(songNumber == null) {
+        currentlyPlayingSongNumber = null;
+        currentSongFromAlbum = null;
+    } else {
+        currentlyPlayingSongNumber = parseInt(songNumber);
+        currentSongFromAlbum = currentAlbum.songs[songNumber-1];
+     }
+   
+};
+    
+var getSongNumberCell = function(number) {
+    return $("[data-song-number*='"+number+"']");
 };
 
 
