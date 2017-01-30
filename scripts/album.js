@@ -171,6 +171,23 @@ var setVolume = function(volume) {
     }
 }
 
+var togglePlayFromPlayerBar = function() {
+    if (currentSoundFile) {
+        
+        var songElement = getSongNumberCell(currentlyPlayingSongNumber);
+        
+        if(currentSoundFile.isPaused()) {
+            currentSoundFile.play();
+            playPauseButton.html(playerBarPauseButton);
+            songElement.html(pauseButtonTemplate);
+        } else {
+            currentSoundFile.pause();
+            playPauseButton.html(playerBarPlayButton);
+            songElement.html(playButtonTemplate);
+        }
+    }
+}
+
 var getSongNumberCell = function(number) {
     return $("[data-song-number*='"+number+"']");
 };
@@ -187,6 +204,8 @@ var currentSongFromAlbum = null;
 var currentSoundFile = null;
 var currentVolume = 80;
 
+var playPauseButton = $('.main-controls .play-pause');
+
 $(function() {
     
    
@@ -198,6 +217,10 @@ $(function() {
     
     $(".previous").click(function() {
         prevSong(); 
+    });
+    
+    playPauseButton.click(function() {
+        togglePlayFromPlayerBar();
     });
     
 });
