@@ -3,7 +3,7 @@ var createSongRow = function(songNumber, song) {
     
     
     var songName = song.title;
-    var songLength = song.duration;
+    var songLength = filterTimeCode(song.duration);
     
     var template = 
         '<tr class="album-view-song-item">'
@@ -104,7 +104,8 @@ var setCurrentAlbum = function(album) {
     $(".artist-song-mobile").html(currentAlbum.artist + " - " + currentSongFromAlbum.title);
     $(".artist-name").html(currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
-        
+    setTotalTimeInPlayerBar(currentSongFromAlbum.duration);
+    
 }
 
 var trackIndex = function(album, song) {
@@ -277,11 +278,27 @@ var updateSeekBarWhileSongPlays = function() {
             var seekBarFillRatio = this.getTime() / this.getDuration();
             var seekBar = $('.seek-control .seek-bar');
             
+            setCurrentTimeInPlayerBar(this.getTime());
             updateSeekPercentage(seekBar, seekBarFillRatio);
         });
     }
 };
 
+var setCurrentTimeInPlayerBar = function(currentTime) {
+    $(".current-time").html(filterTimeCode(currentTime));
+};
+
+var setTotalTimeInPlayerBar = function(totalTime) {
+  $(".total-time").html(filterTimeCode(totalTime));  
+};
+
+var filterTimeCode = function(timeInSeconds) {
+
+    var minutes = parseFloat(Math.floor(timeInSeconds / 60));
+    var seconds = parseFloat(Math.floor(timeInSeconds % 60));
+    
+    return (minutes + ":" + ((seconds < 10) ? ("0"+seconds) : (seconds)) );
+};
 
 var playButtonTemplate = '<a class="album-song-button"><span class="icon ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="icon ion-pause"></span></a>';
@@ -298,7 +315,6 @@ var playPauseButton = $('.main-controls .play-pause');
 
 $(function() {
     
-   
     setCurrentAlbum(albumPicasso);
     setupSeekBars();
     
